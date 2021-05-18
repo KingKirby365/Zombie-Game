@@ -1,0 +1,152 @@
+﻿<!DOCKTYPE html>
+<html>
+<head>
+<title>Wow, that's cool</title>
+
+<style>
+#zombie_map {
+	height: 100%;
+	width: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	background_color: grey;
+}
+</style>
+
+
+</head>
+
+
+
+<body>
+My Zombie map
+
+<div id="zombie_map"></div>
+<script>
+	
+	var zombie_map;
+        var tolerance = 10;
+        var count = 0;
+	var score = 0;
+	
+	var data = `-33.32802101892169 115.63202793121339 zombie.png
+-33.32781035624595 115.63185626983643 zombie.png
+-33.32767589044193 115.63232833862305 zombie.png
+-33.32753246002226 115.63175434589387 zombie.png
+-33.32746970913941 115.63209230422974 zombie.png
+-33.327196294051 115.63187236309052 zombie.png
+-33.327281456219715 115.63208157539368 zombie.png
+-33.32738454715468 115.63248927116395 zombie.png
+-33.32738902936647 115.63248927116395 zombie.png
+-33.32795826839069 115.63332343816758 weapons.png
+-33.32731283173457 115.63302839517594 weapons.png
+-33.32750556679228 115.6323363852501 weapons.png
+-33.328007572383136 115.6316711974144 weapons.png
+-33.32700804054058 115.63341999769212 weapons.png
+-33.32664946130035 115.63255632638932 weapons.png
+-33.327662443850116 115.63158536672593 hospital.png
+-33.32708872066628 115.63358629465104 hospital.png
+-33.32667635479455 115.63255096197129 hospital.png
+-33.327586246457315 115.6332000565529 hospital.png
+-33.32789551781448 115.63280845403672 hospital.png
+-33.3269856293813 115.63315177679063 zombie.png
+-33.327442815890066 115.633039124012 zombie.png
+-33.32727249178481 115.63362920999528 zombie.png`;
+
+var markers = data.split("\n");
+var all_markers=[];
+var count = 0;
+
+	function initMap() {
+
+	zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
+	zoom: 18,
+	center: {lat: -33.327617 , lng: 115.633066}
+});
+	
+if (navigator.geolocation) {
+navigator.geolocation.watchPosition(set_my_position);
+}
+else {
+	alert("Geolocation dosen't work in your browser");
+}
+
+old_position = new google.maps.Marker({
+position: {lat: -33.327617, lng: 115.633066},
+map: zombie_map
+});
+function set_my_position(position) {
+
+old_position.setMap(null);
+
+var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+console.log(pos);
+
+	var marker = new google.maps.Marker({
+		position: pos,
+		icon: "player.png",
+		map: zombie_map
+});
+old_position = marker;
+
+for (var i=0; i<call_markers.length; i++) {
+var distance = google.maps.geometry.spherical.computeDistanceBetween(pos, all_markers[i].getPosition());
+console.log(distance)
+if (distance <tolerance ){
+var what_is it = allmarkers[i].getIcon();
+what_is_it = what_is_it.replace(".png, "")
+alert("found the"+ what_is_it)
+
+all_markers[i].setMap(null);
+
+if (what_is_it = "zombie") {
+score -=10;
+alert ("Your score is " + score)
+}
+else if (what_is_it = "hospital") {
+score +=50;
+alert ("Your score is " + score)
+}
+else if (what is it = "weapons") {
+score +=30;
+alert("Your score is " + score)
+}
+
+}
+}
+}
+
+	if (count<1) {
+	for (var i=0; i< markers.length; i++) {
+	var marker_data = markers[i].trim().split(" ");
+	var latitude = marker_data[0];
+	var longitude = marker_data[1];
+	var emoji = marker_data[2];
+
+	var marker_position = new google.maps.LatLng(latitude, longitude);
+	var marker = new google.maps.Marker({
+	position: marker_position,
+	icon: emoji,
+	map: zombie_map
+	});
+
+	all_markers.push(marker);
+
+}
+count++;
+
+}
+}
+</script>
+
+<script async defer
+   src ="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1zDzcEHvpGTudm2d_sxBa2PGvbZDver4&callback=initMap&libaries=geometry">
+</script>
+
+
+
+</body>
+
+
+</html>
